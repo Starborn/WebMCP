@@ -17,3 +17,61 @@ This is premature. The security implications of exposing website functionality t
 Selling security tooling for a threat model that does not yet exist is not responsible engineering.What WebMCP Is NotWebMCP is not the Model Context Protocol (MCP). It does not implement the MCP wire protocol (JSON-RPC 2.0). It is not interoperable with MCP client libraries. It borrows the tool abstraction -- functions with schemas and descriptions -- but implements everything through browser-native mechanisms. The name creates confusion that is being commercially exploited.(See Technical Note 3: https://github.com/Starborn/webmcp/blob/main/WebMCnotMCP.md)What You Should DoIf you are a developer: contribute and experiment with the Chrome preview, but do not deploy WebMCP tools on production sites until the security model is defined.If you are buying services: no commercial product can deliver WebMCP security compliance because the spec has not defined what compliance means.If you are a standards participant: the W3C Web Machine Learning Community Group meets next on 5 March 2026. Comments can also be submitted via the public mailing list (public-webmachinelearning@w3.org) or as GitHub issues (https://github.com/webmachinelearning/webmcp/issues). 
 
 The window for meaningful input is now.ReferencesW3C Draft Spec: https://webmachinelearning.github.io/webmcp/Spec Source (index.bs): https://github.com/webmachinelearning/webmcp/blob/main/index.bsSecurity/Privacy Doc (separate, not in spec): https://github.com/webmachinelearning/webmcp/blob/main/docs/security-privacy-considerations.mdTechnical Notes 1-3: https://github.com/Starborn/webmcp/W3C CG Mailing List: public-webmachinelearning@w3.orgIssue Tracker: https://github.com/webmachinelearning/webmcp/issues. Corrections and discussion welcome.
+
+
+SEE ALSO SUGGESTED EDITS BELOW SUBMITTED AS PRs and to the web machine learning mailing list
+
+PR 1 -- Clarify MCP analogy in Introduction (line 84)   trying to submit as PR on ghub now!!
+
+Current text (line 84):
+
+    Web pages that use WebMCP can be thought of as Model Context Protocol [[!MCP]] servers that implement tools in client-side script instead of on the backend.
+
+Suggested edit:
+
+    Web pages that use WebMCP can be thought of as analogous to Model Context Protocol [[!MCP]] servers in that they expose callable tools, but WebMCP implements tool discovery, registration, and invocation through browser-native mechanisms rather than the MCP wire protocol.
+
+Source: TN3 (WebMCnotMCP.md) -- "A Suggested Clarification" section. This is the single most important edit.
+
+
+PR 2 -- Add note to Security section (lines 98-103)
+
+Currently empty except a TODO comment. Add a non-normative note:
+
+    Note: WebMCP's threat model differs from that of backend MCP servers. Security review should address client-side JavaScript execution, browser origin-based trust boundaries, prompt injection via tool descriptions and responses, and silent tool registration, rather than importing assumptions from backend protocol security models.
+
+Source: TN3 "Why This Matters for Standards Review" + TN2 risk sections on prompt injection and consent model gaps.
+
+PR 3 -- Add note to Accessibility section (line 105)
+
+Currently completely empty. Add a non-normative note:
+
+    Note: WebMCP tools introduce a second machine-readable description of page functionality alongside the accessibility tree. Implementations should consider how tool descriptions relate to existing ARIA roles and properties to avoid divergence between the two representations.
+
+Source: TN2 accessibility testing section + existing issue #91 (Redundancy with the accessibility tree) + issue #65 (Accessibility via agentic interfaces).
+
+PR 4 -- Clarify agent definition scope (line 92)    submitted as PR  by starborn on 28 Feb
+
+Current text:
+
+    An <dfn>agent</dfn> is an autonomous assistant that can understand a user's goals and take actions on the user's behalf to achieve them. Today, these are typically implemented by large language model (LLM) based [=AI platforms=], interacting with users via text-based chat interfaces.
+
+Suggested addition after the existing sentence:
+
+    An <dfn>agent</dfn> is an autonomous assistant that can understand a user's goals and take actions on the user's behalf to achieve them. Today, these are typically implemented by large language model (LLM) based [=AI platforms=], interacting with users via text-based chat interfaces. In the context of this specification, agents operate within or in coordination with an active browser session where a human user is present.
+
+Source: TN3 operational mode distinction + the spec's own non-goal of headless browsing scenarios (README).
+
+PR 5 -- Add interoperability note to the MCP bibliography entry (lines 292-298)
+
+After the biblio entry for MCP, add a note to the Introduction or Terminology:
+
+    Note: While WebMCP borrows the tool abstraction from the Model Context Protocol [[!MCP]], it does not implement the MCP wire protocol (JSON-RPC 2.0) and is not interoperable with MCP client libraries at the transport level.
+
+Source: TN3 transport section -- developers expecting protocol-level interoperability will be misled.
+
+    PR 4 (agent definition scope) -- smallest, least controversial, clarifies existing text     DONE
+    PR 1 (MCP analogy clarification) -- the core issue, directly addresses TN3     DOING
+    PR 5 (interoperability note) -- technical clarification, low friction
+    PR 3 (accessibility note) -- fills an empty section, aligns with issue #91
+    PR 2 (security note) -- fills an empty section, more substantive
